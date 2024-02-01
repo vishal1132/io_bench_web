@@ -21,11 +21,16 @@ async fn main() {
     };
     let router= Router::new()
         .route("/data", get(data))
+        .route("/bench", get(bench))
         .route("/test", get(test))
         .with_state(app_state.clone());
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     axum::serve(listener, router).await.unwrap();
+}
+
+async fn bench(){
+    sleep(Duration::from_millis(10)).await;
 }
 
 async fn test(State(state): State<AppState>) -> String {
